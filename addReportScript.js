@@ -125,27 +125,59 @@ floorButtons.forEach(button => {
   button.addEventListener("click", () => {
     selectedFloor = button.dataset.floor;
 
-    floorButtons.forEach(btn => btn.classList.remove("selected"));
+    floorButtons.forEach(btn => {
+      btn.classList.add("hidden");
+      btn.classList.remove("selected");
+    });
+
+    button.classList.remove("hidden");
     button.classList.add("selected");
 
     classButtons.innerHTML = "";
 
     classesByFloor[selectedFloor].forEach(className => {
       const classBtn = document.createElement("button");
-      classBtn.textContent = className;
+      if (className.includes("Toilet")) {
+        const isFemale = className.includes("♀");
 
-        classBtn.addEventListener("click", () => {
+        classBtn.innerHTML = `
+          Toilet 
+          <img src="images-for-addreport/${isFemale ? "Girl-Icon.png" : "Boy-Icon.png"}" class="toilet-icon">
+        `;
+      } else {
+        classBtn.textContent = className;
+      }
+
+      classBtn.addEventListener("click", () => {
         selectedClass = className;
+        
 
-        areaText.textContent = `${selectedFloor} - ${selectedClass}`;
-        selectedAreaBtn.textContent = `${selectedFloor} - ${selectedClass}`;
+        const areaLabel = `${selectedFloor} - ${selectedClass}`;
+
+        if (selectedClass.includes("Toilet")) {
+          const isFemale = selectedClass.includes("♀");
+          const iconFile = isFemale ? "Girl-Icon.png" : "Boy-Icon.png";
+
+          areaText.innerHTML = `
+            ${selectedFloor} - Toilet
+            <img src="images-for-addreport/${iconFile}" class="toilet-icon">
+          `;
+
+          selectedAreaBtn.innerHTML = `
+            ${selectedFloor} - Toilet
+            <img src="images-for-addreport/${iconFile}" class="toilet-icon">
+          `;
+        } else {
+          areaText.textContent = areaLabel;
+          selectedAreaBtn.textContent = areaLabel;
+        }
 
         floorButtons.forEach(btn => btn.classList.add("hidden"));
         classButtons.innerHTML = "";
         classButtons.classList.add("hidden");
 
         selectedAreaWrapper.classList.remove("hidden");
-        });
+      });
 
       classButtons.appendChild(classBtn);
     });
@@ -284,7 +316,7 @@ confirmSubmit.addEventListener("click", () => {
     area: `${selectedFloor} - ${selectedClass}`,
     facility: selectedFacility,
     description: description.value,
-    status: "Not Fixed",
+    status: "Issued",
     date: new Date().toLocaleDateString(),
     image: uploadedImageData,
     imageName: uploadedFiles[0] ? uploadedFiles[0].name : "",
