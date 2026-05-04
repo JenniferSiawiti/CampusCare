@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Reports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="viewReportStyle.css">
+</head>
+<body>
+    <div class="phone">
+    <header>
+        <img src="images-for-addreport/CampusCare_Logo.png" class="logo-img">
+    </header>
+
+    <div class="search-box">Search <span>⌕</span></div>
+
+    <div class="top-actions">
+        <button>Sort ︿</button>
+        <button onclick="location.href='addreport.html'">＋ Report</button>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" id="reportedTab">Reported/In-Progress</button>
+        <button class="tab" id="fixedTab">Fixed</button>
+    </div>
+
+    <div class="reports-section">
+        <main id="reportsContainer" class="reports-container"></main>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="homepage.html">Home</a>
+        <a class="active" href="view-report.html">View<br>Reports</a>
+        <a href="feedback.html">Feedback</a>
+    </nav>
+
+    <!-- Detail Popup -->
+    <div class="popup hidden" id="detailPopup">
+    <div class="detail-modal">
+
+        <div class="detail-top-box">
+        <button id="closeDetail" class="back-btn">←</button>
+
+        <img id="detailImg" src="" class="detail-img">
+
+        <div class="detail-info">
+        <span id="detailStatus"></span>
+        <span id="detailDate"></span>
+        <span id="detailLocation"></span>
+        <span id="detailFacility"></span>
+        </div>
+        </div>
+
+        <div class="detail-desc" id="detailDesc"></div>
+
+    </div>
+    </div>
+    
+
+</div>
+    <script src="viewReportScript.js"></script>
+</body>
+</html>
