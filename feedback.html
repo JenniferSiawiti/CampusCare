@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+</head>
+<body>
+
+<div class="container" id="step1">
+  <h1>FeedBack</h1>
+  <p>This is the page where user can send feedback to the creator of the website.</p>
+  <p>Do you want to send a feedback?</p>
+  <button onclick="chooseAnon(true)">Send feedback anonymously</button>
+  <button class="secondary-btn" onclick="chooseAnon(false)">Send feedback with identity</button>
+</div>
+
+<div class="container" id="step2" style="display:none">
+  <h1>FeedBack</h1>
+
+  <div id="emailField" style="display:none">
+    <input type="email" id="fbEmail" placeholder="Email">
+  </div>
+
+  <textarea id="feedback" placeholder="Enter Feedback"></textarea>
+
+  <button onclick="confirmSubmit()">Submit</button>
+  <button class="secondary-btn" onclick="goBack()">Cancel</button>
+</div>
+
+<div class="container" id="step3" style="display:none">
+  <h1>Do you wish to submit?</h1>
+  <button onclick="submitFeedbackFinal()">Confirm</button>
+  <button class="secondary-btn" onclick="goBackToInput()">Cancel</button>
+</div>
+
+<div class="container success" id="step4" style="display:none">
+  <h1>Sent!</h1>
+  <p>Thank you for the Feedback!</p>
+  <button onclick="resetFeedback()">Okay</button>
+</div>
+
+</body>
+</html>
