@@ -9,11 +9,11 @@ function togglePassword(inputId, btn) {
   const img = btn.querySelector("img");
   if (input.type === "password") {
     input.type = "text";
-    img.src = "images/Closed Eye Icon.svg";
+    img.src = typeof EYE_CLOSED !== "undefined" ? EYE_CLOSED : "images/Closed Eye Icon.svg";
     img.alt = "Hide password";
   } else {
     input.type = "password";
-    img.src = "images/Open Eye Icon.svg";
+    img.src = typeof EYE_OPEN !== "undefined" ? EYE_OPEN : "images/Open Eye Icon.svg";
     img.alt = "Show password";
   }
 }
@@ -76,13 +76,13 @@ function chooseAnon(choice) {
   const feedbackBgImg = document.getElementById("feedbackBgImg");
 
   if (choice) {
-    // Anonymous: hide email field, use the tall Sampoerna_Email.svg for textarea
+    // Anonymous: hide email field, use anonymous textarea bg
     emailField.style.display = "none";
-    if (feedbackBgImg) feedbackBgImg.src = "images/Sampoerna_Email.svg";
+    if (feedbackBgImg) feedbackBgImg.src = typeof FB_TA_ANON !== "undefined" ? FB_TA_ANON : "images/Sampoerna_Email.svg";
   } else {
-    // With identity: show email field, use Sampoerna_Email__2_.svg for textarea
+    // With identity: show email field, use identity textarea bg
     emailField.style.display = "flex";
-    if (feedbackBgImg) feedbackBgImg.src = "images/Sampoerna_Email__2_.svg";
+    if (feedbackBgImg) feedbackBgImg.src = typeof FB_TA_IDENT !== "undefined" ? FB_TA_IDENT : "images/Sampoerna_Email__2_.svg";
   }
 }
 
@@ -110,12 +110,10 @@ function confirmSubmit() {
     return;
   }
 
-  // Show modal overlay (blurs background)
   document.getElementById("step3-overlay").style.display = "flex";
 }
 
 function goBackToInput() {
-  // Hide modal, keep step2 visible
   document.getElementById("step3-overlay").style.display = "none";
 }
 
