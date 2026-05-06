@@ -1,17 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="stylesheet" href="style.css">
-<script src="script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusCare – Login</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
 </head>
 <body>
 <div class="container">
-<h1>Welcome to CampusCare</h1>
-<input type="email" id="email" placeholder="Sampoerna Email">
-<input type="password" id="password" placeholder="Enter Password">
-<button onclick="login()">Login</button>
-<p class="link" onclick="forgotPassword()">Forgot Password?</p>
-<p>Don't have an account? <a href="signup.html">Sign up</a></p>
+  <h1>Welcome to CampusCare</h1>
+  <input type="email" id="email" placeholder="Sampoerna Email">
+  <div class="password-wrapper">
+    <input type="password" id="password" placeholder="Enter Password">
+    <button class="eye-toggle" type="button" onclick="togglePassword('password', this)" tabindex="-1">
+      <img src="images/Open Eye Icon.svg" alt="Show password">
+    </button>
+  </div>
+  <button onclick="login()">Login</button>
+  <p class="link" onclick="forgotPassword()">Forgot Password?</p>
+  <p>Don't have an account? <a href="signup.html">Sign up</a></p>
 </div>
 </body>
 </html>
