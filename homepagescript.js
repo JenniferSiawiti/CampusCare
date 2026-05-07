@@ -97,3 +97,41 @@ window.onclick = (e) => {
         menu.style.display = 'none';
     }
 }
+
+function loadReportsToHomepage() {
+  const issuedContainer = document.getElementById("issuedContainer");
+  if (!issuedContainer) return;
+
+  const reports = JSON.parse(localStorage.getItem("reports")) || [];
+
+  issuedContainer.innerHTML = "";
+
+  const activeReports = reports.filter(report => report.status !== "Fixed");
+
+  activeReports.forEach(report => {
+    const card = document.createElement("div");
+    card.classList.add("report-card", "searchable-card");
+
+    card.dataset.date = report.date;
+    card.dataset.floor = report.area.split(" - ")[0];
+
+    card.innerHTML = `
+      <div class="date-box">${report.date}</div>
+
+      <div class="img-box">
+        ${
+          report.image
+          ? `<img src="${report.image}">`
+          : `<div class="no-image">No image</div>`
+        }
+        <span class="report-status">${report.status}</span>
+      </div>
+
+      <div class="info-box">(${report.area}), (${report.facility})</div>
+    `;
+
+    issuedContainer.appendChild(card);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", loadReportsToHomepage);
