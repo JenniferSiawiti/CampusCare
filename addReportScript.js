@@ -269,8 +269,8 @@ fileInput.addEventListener("change", () => {
     return;
   }
 
-  if (file.size > 2 * 1024 * 1024) {
-    alert("Image must be less than 2MB.");
+  if (file.size > 1 * 1024 * 1024) {
+    alert("Image must be less than 1MB.");
     fileInput.value = "";
     return;
   }
@@ -316,7 +316,7 @@ confirmSubmit.addEventListener("click", () => {
     facility: selectedFacility,
     description: description.value.trim(),
     status: "Issued",
-    date: new Date().toLocaleDateString(),
+    date: new Date().toISOString().split("T")[0],
     image: uploadedImageData || "",
     imageName: uploadedFiles[0] ? uploadedFiles[0].name : "",
     imageType: uploadedFiles[0] ? uploadedFiles[0].type : ""
