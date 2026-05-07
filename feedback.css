@@ -1,0 +1,363 @@
+/* ── Reset ── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Body ── */
+body {
+  font-family: 'Alexandria', 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #E5F5FF 0%, #FAFCFF 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 64px;
+}
+
+/* ── Phone frame ── */
+.phone {
+  position: relative;
+  width: 412px;
+  max-width: 100vw;
+  min-height: calc(100vh - 64px);
+  background: linear-gradient(180deg, #DDF5FF 0%, #FFFFFF 30.42%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Mid card rectangle ── */
+.mid-card {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(180deg,
+    rgba(239,247,255,0.1) 0%,
+    #E7F6FF 46.15%,
+    rgba(221,245,255,0.1) 100%);
+  border-radius: 20px;
+  margin-top: 329px;
+  padding: 16px 16px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ── Logo mark ── */
+.logo-area {
+  position: absolute;
+  top: 199px;
+  left: 29px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logo-mark {
+  width: 64px;
+  height: 66px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.logo-mark svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── "FeedBack" gradient title ── */
+.feedback-title {
+  position: absolute;
+  top: 206px;
+  left: 102px;
+  font-family: 'Alexandria', sans-serif;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 59px;
+  background: linear-gradient(90deg, #0F2E50 0%, #236AB6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+}
+
+/* ── Description text ── */
+.desc-text {
+  font-family: 'Alexandria', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  color: #0F2E50;
+  padding: 0 6px;
+}
+
+/* ── Question text ── */
+.question-text {
+  font-family: 'Alexandria', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  color: #0F2E50;
+}
+
+/* ── Step 1 buttons ── */
+.btn-anon {
+  width: 380px;
+  max-width: 95%;
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid #0F2E50;
+  background: linear-gradient(90deg, #548AAE 0%, #455F8F 35.58%, #5463AE 68.75%, #57458F 100%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Alexandria', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: #BDD1E9;
+  transition: opacity 0.15s;
+}
+
+.btn-anon:hover { opacity: 0.88; }
+
+.btn-identity {
+  width: 380px;
+  max-width: 95%;
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid #0F2E50;
+  background: linear-gradient(90deg, #EBF5FF 0%, #DCEDFF 33.65%, rgba(166,216,250,0.9) 68.27%, #C4CEFF 100%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Alexandria', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: #0F2E50;
+  transition: opacity 0.15s;
+}
+
+.btn-identity:hover { opacity: 0.88; }
+
+/* ── Steps 2 / 4 container ── */
+.container {
+  background: rgba(221,230,240,0.92);
+  padding: 30px 20px;
+  border-radius: 12px;
+  width: 380px;
+  max-width: 95vw;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 40px auto;
+}
+
+.container.success { background: rgba(200,230,201,0.95); }
+
+/* ── Step title ── */
+.step-title {
+  font-family: 'Alexandria', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  background: linear-gradient(90deg, #0F2E50 0%, #236AB6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Step sub text ── */
+.step-sub {
+  font-family: 'Alexandria', sans-serif;
+  font-size: 14px;
+  color: #0F2E50;
+  text-align: center;
+}
+
+/* ── Form fields ── */
+.field-wrap { width: 100%; }
+
+.field-wrap input[type="email"],
+.field-wrap textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #1D4066;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #FAFCFF 0%, rgba(221,245,255,0.9) 100%);
+  font-family: 'Alexandria', sans-serif;
+  font-size: 15px;
+  color: #0F2E50;
+  outline: none;
+  resize: none;
+}
+
+.field-wrap input[type="email"] { height: 48px; }
+.field-wrap textarea { height: 260px; }
+
+/* ── Two-button row (Step 2) ── */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.btn-cancel {
+  flex: 1;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #0F2E50;
+  background: white;
+  font-family: 'Alexandria', sans-serif;
+  font-size: 14px;
+  color: #0F2E50;
+  cursor: pointer;
+}
+
+.btn-submit {
+  flex: 1;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #0F2E50;
+  background: #548AAE;
+  font-family: 'Alexandria', sans-serif;
+  font-size: 14px;
+  color: #EDFAFF;
+  cursor: pointer;
+}
+
+/* ── Okay button (Step 4) ── */
+.btn-okay {
+  width: 118px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #0F2E50;
+  background: white;
+  font-family: 'Alexandria', sans-serif;
+  font-size: 14px;
+  color: #0F2E50;
+  cursor: pointer;
+  margin-top: 12px; /* FIX: space between "Thank you" text and Okay button */
+}
+
+/* ── Modal overlay (Step 3) ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,34,64,0.45);
+  backdrop-filter: blur(6px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-box {
+  background: #DDE6F0;
+  border-radius: 14px;
+  padding: 36px 24px 28px; /* FIX: increased padding so question text breathes above buttons */
+  width: 90%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px; /* FIX: increased gap so buttons don't crowd the question text */
+  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+}
+
+.modal-question {
+  font-family: 'Alexandria', sans-serif;
+  font-size: 20px;
+  color: #1D4066;
+  text-align: center;
+  background: linear-gradient(90deg, #DDF5FF 0%, #DCEDFF 24%, #EBF5FF 60%, #DAF5FF 100%);
+  border: 1px solid #1D4066;
+  border-radius: 5px;
+  padding: 20px;
+  width: 100%;
+}
+
+.modal-btn-row {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* ── Bottom Navigation Bar ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 412px;
+  max-width: 100vw;
+  height: 64px;
+  display: flex;
+  z-index: 50;
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.nav-tab.home {
+  width: 135px;
+  background: #EDFAFF;
+  box-shadow: 3px -2px 5px rgba(189,209,233,0.5);
+}
+
+.nav-tab.view-reports {
+  flex: 1;
+  background: #EDFAFF;
+  box-shadow: 3px -2px 5px rgba(189,209,233,0.5);
+  border-radius: 0 5px 0 0;
+}
+
+.nav-tab.feedback-tab {
+  width: 135px;
+  background: #BDD1E9;
+  box-shadow: 3px -2px 5px rgba(189,209,233,0.5);
+}
+
+.nav-label {
+  font-family: 'Alexandria', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+}
+
+.nav-tab.home .nav-label,
+.nav-tab.view-reports .nav-label {
+  color: #92BBD7;
+}
+
+.nav-tab.feedback-tab .nav-label {
+  color: #1D4066;
+}
+
+/* ── Step 1 wrapper ── */
+#step1 {
+  position: relative;
+  width: 412px;
+  max-width: 100vw;
+  min-height: 900px;
+}
+
+/* ── Steps 2 / 4 shown as centered container ── */
+#step2, #step4 {
+  display: none;
+}

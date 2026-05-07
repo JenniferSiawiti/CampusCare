@@ -6,20 +6,24 @@ function isValidSampoernaEmail(email) {
 
 function togglePassword(inputId, btn) {
   const input = document.getElementById(inputId);
-  const img = btn.querySelector("img");
+  const openIcon   = btn.querySelector(".eye-open-icon");
+  const closedIcon = btn.querySelector(".eye-closed-icon");
+
   if (input.type === "password") {
     input.type = "text";
-    img.src = typeof EYE_CLOSED !== "undefined" ? EYE_CLOSED : "images/Closed Eye Icon.svg";
-    img.alt = "Hide password";
+    if (openIcon)   openIcon.style.display   = "none";
+    if (closedIcon) closedIcon.style.display = "";
+    btn.setAttribute("aria-label", "Hide password");
   } else {
     input.type = "password";
-    img.src = typeof EYE_OPEN !== "undefined" ? EYE_OPEN : "images/Open Eye Icon.svg";
-    img.alt = "Show password";
+    if (openIcon)   openIcon.style.display   = "";
+    if (closedIcon) closedIcon.style.display = "none";
+    btn.setAttribute("aria-label", "Show password");
   }
 }
 
 function login() {
-  const email = document.getElementById("email").value;
+  const email    = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
   if (!email || !password) {
@@ -32,11 +36,11 @@ function login() {
     return;
   }
 
-  alert("Login successful (demo)");
+  window.location.href = "homepage.html";
 }
 
 function signup() {
-  const email = document.getElementById("email").value;
+  const email    = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
   if (!email || !password) {
@@ -72,17 +76,15 @@ function chooseAnon(choice) {
   document.getElementById("step1").style.display = "none";
   document.getElementById("step2").style.display = "flex";
 
-  const emailField = document.getElementById("emailField");
+  const emailField  = document.getElementById("emailField");
   const feedbackBgImg = document.getElementById("feedbackBgImg");
 
   if (choice) {
-    // Anonymous: hide email field, use anonymous textarea bg
     emailField.style.display = "none";
-    if (feedbackBgImg) feedbackBgImg.src = typeof FB_TA_ANON !== "undefined" ? FB_TA_ANON : "images/Sampoerna_Email.svg";
+    if (feedbackBgImg) feedbackBgImg.src = "images/Sampoerna_Email.svg";
   } else {
-    // With identity: show email field, use identity textarea bg
     emailField.style.display = "flex";
-    if (feedbackBgImg) feedbackBgImg.src = typeof FB_TA_IDENT !== "undefined" ? FB_TA_IDENT : "images/Sampoerna_Email__2_.svg";
+    if (feedbackBgImg) feedbackBgImg.src = "images/Sampoerna_Email__2_.svg";
   }
 }
 
@@ -93,7 +95,7 @@ function goBack() {
 
 function confirmSubmit() {
   const feedback = document.getElementById("feedback").value;
-  const email = document.getElementById("fbEmail").value;
+  const email    = document.getElementById("fbEmail") ? document.getElementById("fbEmail").value : "";
 
   if (!feedback) {
     alert("Please enter feedback first");
@@ -119,13 +121,14 @@ function goBackToInput() {
 
 function submitFeedbackFinal() {
   document.getElementById("step3-overlay").style.display = "none";
-  document.getElementById("step2").style.display = "none";
-  document.getElementById("step4").style.display = "flex";
+  document.getElementById("step2").style.display         = "none";
+  document.getElementById("step4").style.display         = "flex";
 }
 
 function resetFeedback() {
   document.getElementById("step4").style.display = "none";
   document.getElementById("step1").style.display = "flex";
-  document.getElementById("feedback").value = "";
-  document.getElementById("fbEmail").value = "";
+  document.getElementById("feedback").value      = "";
+  const fbEmail = document.getElementById("fbEmail");
+  if (fbEmail) fbEmail.value = "";
 }
