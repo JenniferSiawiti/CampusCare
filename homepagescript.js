@@ -26,8 +26,42 @@ function toggleSort() {
 
 function globalSearch() {
     const q = document.getElementById('searchInput').value.toLowerCase();
-    document.querySelectorAll('.searchable-card').forEach(card => {
-        card.style.display = card.innerText.toLowerCase().includes(q) ? "flex" : "none";
+    
+    // 1. Target the main containers (Fixed and Reported sections)
+    const sections = document.querySelectorAll('.fixed-facility-section, .progress-section');
+
+    sections.forEach(section => {
+        // Find all cards or content items within this section
+        const cards = section.querySelectorAll('.searchable-card, .fixed-card-content, .status-row');
+        let sectionHasMatch = false;
+
+        // 2. Check every card inside the section
+        cards.forEach(card => {
+            // We check the innerText of the card/content to see if it matches the query
+            const text = card.innerText.toLowerCase();
+            if (text.includes(q)) {
+                card.style.display = ""; // Restore original display (flex/block)
+                sectionHasMatch = true;
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        // 3. SPECIAL CHECK: If the search matches section titles or pills outside cards
+        // This ensures "Fixed" or "SL" works even if it's just a label
+        const sectionTitleText = section.querySelector('.section-title').innerText.toLowerCase();
+        if (sectionTitleText.includes(q)) {
+            sectionHasMatch = true;
+            // If the title matches, show all cards in this section
+            cards.forEach(card => card.style.display = "");
+        }
+
+        // 4. Hide/Show the entire section border and container
+        if (sectionHasMatch) {
+            section.style.display = "block";
+        } else {
+            section.style.display = "none";
+        }
     });
 }
 
@@ -41,7 +75,7 @@ function globalSort(crit) {
         const dateB = new Date(b.dataset.date);
         if (crit === 'latest') return dateB - dateA;
         if (crit === 'recent') return dateA - dateB;
-        if (['7th', '6th', 'lg', '19th'].includes(crit)) {
+        if (['19th', '7th', '6th', 'lg'].includes(crit)) {
             return a.dataset.floor === crit ? -1 : 1;
         }
         return 0;
