@@ -13,12 +13,12 @@ body {
 }
 
 .phone {
-  width: 375px;
-  min-height: 812px;
+  width: 412px;
+  height: 917px;
   background: linear-gradient(
     to bottom,
     #DDF5FF 0%,
-    #FFFFFF 30%
+    #EEFAFF 30%
   );
   padding: 18px;
   position: relative;
@@ -373,7 +373,7 @@ textarea {
   align-items: center;
   justify-content: center;
 
-  background-image: url("images-for-addreport/Union.png");
+  background-image: url("Union.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -531,14 +531,11 @@ textarea {
   min-height: 100%;
   padding: 18px;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
 }
 
 .success-header {
   width: 100%;
-  margin-bottom: 120px;
 }
 
 .success-header .logo-img {
@@ -547,8 +544,15 @@ textarea {
   height: auto;
 }
 
+/* CENTER the Reported section */
 .success-container {
-  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 320px;
   text-align: center;
 }
 
