@@ -7,34 +7,38 @@ const reports = JSON.parse(localStorage.getItem("reports")) || [];
 function displayReports(type) {
   reportsContainer.innerHTML = "";
 
-  const filteredReports = reports.filter(report => {
+  const allReports = JSON.parse(localStorage.getItem("reports")) || [];
+
+  const filteredReports = allReports.filter(report => {
     if (type === "reported") {
-        return report.status !== "Fixed";
+      return report.status !== "Fixed";
     }
     if (type === "fixed") {
-        return report.status === "Fixed";
+      return report.status === "Fixed";
     }
-});
+  });
 
-  filteredReports.forEach((report, index) => {
+  filteredReports.forEach((report) => {
+    const originalIndex = allReports.indexOf(report);
+
     const card = document.createElement("div");
     card.classList.add("report-card");
 
     card.innerHTML = `
-    <div class="report-image-wrap">
+      <div class="report-image-wrap">
         ${
-        report.image 
-        ? `<img src="${report.image}" class="report-img">`
-        : `<div class="no-image">No image</div>`
+          report.image 
+          ? `<img src="${report.image}" class="report-img">`
+          : `<div class="no-image">No image</div>`
         }
-    </div>
+      </div>
 
-    <div class="report-bar">
+      <div class="report-bar">
         <span>${report.date}</span>
         <span>${report.area}</span>
         <span>${report.status}</span>
-        <a href="#" class="view-detail-btn" data-index="${index}">View details</a>
-    </div>
+        <a href="#" class="view-detail-btn" data-index="${originalIndex}">View details</a>
+      </div>
     `;
 
     reportsContainer.appendChild(card);
@@ -95,4 +99,75 @@ closeDetail.addEventListener("click", () => {
   setTimeout(() => {
     detailPopup.classList.add("hidden");
   }, 600);
+});
+
+const searchInput = document.getElementById("searchInput");
+const sortBtn = document.getElementById("sortBtn");
+const sortMenu = document.getElementById("sortMenu");
+
+sortBtn.addEventListener("click", () => {
+  sortMenu.style.display = sortMenu.style.display === "block" ? "none" : "block";
+});
+
+searchInput.addEventListener("input", () => {
+  const keyword = searchInput.value.toLowerCase();
+  const cards = document.querySelectorAll(".report-card");
+
+  cards.forEach(card => {
+    const text = card.innerText.toLowerCase();
+
+    if (text.includes(keyword)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+});
+
+document.querySelectorAll(".sort-item").forEach(item => {
+  item.addEventListener("click", () => {
+    const sortType = item.dataset.sort;
+
+    let reports = JSON.parse(localStorage.getItem("reports")) || [];
+
+    if (sortType === "latest") {
+      reports.reverse();
+    }
+
+    if (sortType === "oldest") {
+      reports.sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+
+    if (["19th", "7th", "6th", "LG"].includes(sortType)) {
+      reports = reports.filter(report => report.area.startsWith(sortType));
+    }
+
+    reportsContainer.innerHTML = "";
+
+    reports.forEach((report, index) => {
+      const card = document.createElement("div");
+      card.classList.add("report-card");
+
+      card.innerHTML = `
+        <div class="report-image-wrap">
+          ${
+            report.image
+            ? `<img src="${report.image}" class="report-img">`
+            : `<div class="no-image">No image</div>`
+          }
+        </div>
+
+        <div class="report-bar">
+          <span>${report.date}</span>
+          <span>${report.area}</span>
+          <span>${report.status}</span>
+          <a href="#" class="view-detail-btn" data-index="${index}">View details</a>
+        </div>
+      `;
+
+      reportsContainer.appendChild(card);
+    });
+
+    sortMenu.style.display = "none";
+  });
 });
