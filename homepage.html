@@ -48,24 +48,29 @@
             <div class="fixed-facility-section" id="fixedContainer">
                 <div class="section-header-row">
                     <div class="section-title">Fixed Facilities</div>
-                    <a href="homepage.html" class="view-all">View All</a>
+                    <a href="viewreport.html" class="view-all">View All</a>
                 </div>
                 <div class="fixed-card-content">
-                    <button class="nav-arrow prev" onclick="scrollSection('fixedContainer', -200)">‹</button>
-                    <img src="p1.jpeg" class="fixed-photo">
-                    <button class="nav-arrow next" onclick="scrollSection('fixedContainer', 200)">›</button>
-                </div>
-                <div class="status-row">
-                    <span class="status-pill">7th - SL</span>
-                    <span class="status-pill">Desk</span>
-                    <span class="status-pill">Fixed</span>
-                </div>
+    <button class="nav-arrow prev" onclick="scrollSection('fixedContainer', -200)">‹</button>
+    
+    <!-- Wrapper to hold the image and the floating pills -->
+    <div class="image-overlay-wrapper">
+        <img src="p1.jpeg" class="fixed-photo">
+        <div class="status-overlay">
+            <span class="status-pill">7th - SL</span>
+            <span class="status-pill">Desk</span>
+            <span class="status-pill">Fixed</span>
+        </div>
+    </div>
+
+    <button class="nav-arrow next" onclick="scrollSection('fixedContainer', 200)">›</button>
+</div>
             </div>
 
             <div class="progress-section">
                 <div class="section-header-row">
                     <div class="section-title">Reported / In-Progress</div>
-                    <a href="homepage.html" class="view-all">View All</a>
+                    <a href="viewreport.html" class="view-allR">View All</a>
                 </div>
                 <div class="cards-container" id="issuedContainer">
                     <div class="report-card searchable-card" data-date="2026-02-15" data-floor="6th">
