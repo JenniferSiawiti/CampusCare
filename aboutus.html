@@ -1,44 +1,137 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - CampusCare</title>
-    <!-- Importing Alexandria Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="homepagestyle.css">
-</head>
-<body>
-    <div class="app-viewport">
-        <header class="about-header">
-            <span class="about-page-title">About us</span>
-            <!-- The ID backBtn links to your homepagescript.js -->
-            <button id="backBtn" class="back-btn-ui">
-                <img src="https://img.icons8.com/ios-filled/50/1D4066/left.png" style="width:15px;" alt="back">
-            </button>
-        </header>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Navigation Elements ---
+    const backBtn = document.getElementById('backBtn');
+    const logoLink = document.getElementById('logoLink');
 
-        <main class="about-content scroll-content">
-            <div class="about-hero">
-                <!-- The ID logoLink links to your homepagescript.js -->
-                <h1 id="logoLink">Welcome to <br><span>CampusCare</span></h1>
-            </div>
+    // Go back to homepage
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            window.location.href = 'homepage.html';
+        });
+    }
 
-            <section class="about-text">
-                <p>We are here to accompany you in your journey of a comfortable campus life! Here, you can report problematic facilities all around the campus area. You may also view whether your report has been taken care of.</p>
-                
-                <p>Use our intuitive "Report" feature to upload photos and details of facility issues in seconds. Sort reports by location or recent-latest to stay informed. For more details, use Search bar. In the report system, you can only report one facility per area.</p>
-                
-                <p>No more wondering if your report was received. Our dashboard displays statuses from Reported to In-Progress to Fixed, so you know exactly when help is on the way.</p>
+    // Logo click goes to About Us
+    if (logoLink) {
+        logoLink.addEventListener('click', () => {
+            window.location.href = 'aboutus.html';
+        });
+    }
+});
 
-                <p>Browse our "Fixed Facilities" gallery to see the tangible improvements being made across campus every day.</p>
+// --- Existing Homepage Functions ---
+function toggleSort() {
+    const menu = document.getElementById('sortMenu');
+    if (menu) menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+}
 
-                <p>Click “View All” on the picture for more details.</p>
-            </section>
-        </main>
-    </div>
+function globalSearch() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
     
-    <!-- Using the combined script file -->
-    <script src="homepagescript.js"></script>
-</body>
-</html>
+    // 1. Target the main containers (Fixed and Reported sections)
+    const sections = document.querySelectorAll('.fixed-facility-section, .progress-section');
+
+    sections.forEach(section => {
+        // Find all cards or content items within this section
+        const cards = section.querySelectorAll('.searchable-card, .fixed-card-content, .status-row');
+        let sectionHasMatch = false;
+
+        // 2. Check every card inside the section
+        cards.forEach(card => {
+            // We check the innerText of the card/content to see if it matches the query
+            const text = card.innerText.toLowerCase();
+            if (text.includes(q)) {
+                card.style.display = ""; // Restore original display (flex/block)
+                sectionHasMatch = true;
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        // 3. SPECIAL CHECK: If the search matches section titles or pills outside cards
+        // This ensures "Fixed" or "SL" works even if it's just a label
+        const sectionTitleText = section.querySelector('.section-title').innerText.toLowerCase();
+        if (sectionTitleText.includes(q)) {
+            sectionHasMatch = true;
+            // If the title matches, show all cards in this section
+            cards.forEach(card => card.style.display = "");
+        }
+
+        // 4. Hide/Show the entire section border and container
+        if (sectionHasMatch) {
+            section.style.display = "block";
+        } else {
+            section.style.display = "none";
+        }
+    });
+}
+
+function globalSort(crit) {
+    const cont = document.getElementById('issuedContainer');
+    if (!cont) return;
+    
+    const cards = Array.from(cont.querySelectorAll('.report-card'));
+    cards.sort((a, b) => {
+        const dateA = new Date(a.dataset.date);
+        const dateB = new Date(b.dataset.date);
+        if (crit === 'latest') return dateB - dateA;
+        if (crit === 'recent') return dateA - dateB;
+        if (['19th', '7th', '6th', 'lg'].includes(crit)) {
+            return a.dataset.floor === crit ? -1 : 1;
+        }
+        return 0;
+    });
+    
+    cards.forEach(card => cont.appendChild(card));
+    toggleSort();
+}
+
+function scrollSection(id, amt) {
+    const el = document.getElementById(id);
+    if (el) el.scrollBy({ left: amt, behavior: 'smooth' });
+}
+
+// Global click handler for dropdowns
+window.onclick = (e) => {
+    const menu = document.getElementById('sortMenu');
+    if (menu && !e.target.closest('.sort-wrapper') && !e.target.closest('.btn-action')) {
+        menu.style.display = 'none';
+    }
+}
+
+function loadReportsToHomepage() {
+  const issuedContainer = document.getElementById("issuedContainer");
+  if (!issuedContainer) return;
+
+  const reports = JSON.parse(localStorage.getItem("reports")) || [];
+
+  issuedContainer.innerHTML = "";
+
+  const activeReports = reports.filter(report => report.status !== "Fixed");
+
+  activeReports.forEach(report => {
+    const card = document.createElement("div");
+    card.classList.add("report-card", "searchable-card");
+
+    card.dataset.date = report.date;
+    card.dataset.floor = report.area.split(" - ")[0];
+
+    card.innerHTML = `
+      <div class="date-box">${report.date}</div>
+
+      <div class="img-box">
+        ${
+          report.image
+          ? `<img src="${report.image}">`
+          : `<div class="no-image">No image</div>`
+        }
+        <span class="report-status">${report.status}</span>
+      </div>
+
+      <div class="info-box">(${report.area}), (${report.facility})</div>
+    `;
+
+    issuedContainer.appendChild(card);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", loadReportsToHomepage);
