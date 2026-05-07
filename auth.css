@@ -7,33 +7,29 @@
 body {
   font-family: 'Alexandria', 'Segoe UI', sans-serif;
   min-height: 100vh;
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #1d2028;
+  padding: 20px;
 }
 
-/* ── Per-page body backgrounds ── */
-body.page-login {
-  background: linear-gradient(180deg, #E5F5FF 0%, #FAFDFF 100%);
-}
-
-body.page-signup {
-  background: linear-gradient(180deg, #FAFDFF 0%, #E5F5FF 100%);
-}
-
-/* ── Card container ── */
+/* ── Card container (matches homepage .app-viewport) ── */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   padding: 40px 20px;
-  width: 385px;
-  max-width: 95vw;
-  min-height: 890px;
-  background: linear-gradient(180deg, #E5F5FF 0%, #FAFDFF 100%);
-  border-radius: 10px;
-  border: 13px solid #FAFDFF;
+  width: 412px;
+  height: 917px;
+  background: linear-gradient(#DDF5FF 5%, #EEFAFF);
+  border-radius: 0;
+  border: none;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  overflow: hidden;
+  position: relative;
 }
 
 /* ── "Welcome to / CampusCare" heading block ── */
@@ -74,8 +70,7 @@ body.page-signup {
 /* ── Input field wrapper ── */
 .field-wrapper {
   position: relative;
-  width: 364px;
-  max-width: 100%;
+  width: 380px;
   height: 40px;
 }
 
@@ -140,7 +135,7 @@ body.page-signup {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 364px;
+  width: 380px;
   max-width: 100%;
   height: 40px;
   cursor: pointer;
@@ -175,7 +170,7 @@ body.page-signup {
 .or-divider {
   display: flex;
   align-items: center;
-  width: 364px;
+  width: 380px;
   max-width: 100%;
   margin: 4px 0;
 }

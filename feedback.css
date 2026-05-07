@@ -5,24 +5,25 @@
 body {
   font-family: 'Alexandria', 'Segoe UI', sans-serif;
   min-height: 100vh;
-  background: linear-gradient(180deg, #E5F5FF 0%, #FAFCFF 100%);
+  margin: 0;
+  background-color: #1d2028;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  padding-bottom: 64px;
+  padding: 20px;
 }
 
-/* ── Phone frame ── */
+/* ── Phone frame (matches homepage .app-viewport) ── */
 .phone {
   position: relative;
   width: 412px;
-  max-width: 100vw;
-  min-height: calc(100vh - 64px);
-  background: linear-gradient(180deg, #DDF5FF 0%, #FFFFFF 30.42%);
+  height: 917px;
+  background: linear-gradient(#DDF5FF 5%, #EEFAFF);
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  overflow: hidden;
 }
 
 /* ── Mid card rectangle ── */
@@ -144,21 +145,22 @@ body {
 
 /* ── Steps 2 / 4 container ── */
 .container {
-  background: rgba(221,230,240,0.92);
-  padding: 30px 20px;
-  border-radius: 12px;
-  width: 380px;
-  max-width: 95vw;
+  background: linear-gradient(#DDF5FF 5%, #EEFAFF);
+  padding: 40px 20px;
+  border-radius: 0;
+  width: 412px;
+  height: 917px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
   display: none;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 12px;
-  margin: 40px auto;
+  margin: 0 auto;
 }
 
-.container.success { background: rgba(200,230,201,0.95); }
+.container.success { background: linear-gradient(90deg, #DDFFDE 0%, #DCFFE9 24.04%, #F8FFEB 60.58%, #DAFFEE 100%); }
 
 /* ── Step title ── */
 .step-title {
@@ -289,75 +291,75 @@ body {
   justify-content: center;
 }
 
-/* ── Bottom Navigation Bar ── */
-.bottom-nav {
-  position: fixed;
+/* ── Bottom Navigation Bar (step 1 only) ── */
+#step1 .bottom-nav {
+  position: absolute;
   bottom: 0;
-  width: 412px;
-  max-width: 100vw;
+  left: 0;
+  width: 100%;
   height: 64px;
   display: flex;
+  background: #EDFAFF;
+  border-top: 1px solid #ddd;
   z-index: 50;
 }
 
-.nav-tab {
+#step1 .nav-box {
+  flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  cursor: pointer;
-  text-decoration: none;
-  border: none;
-  outline: none;
-  padding: 0;
-}
-
-.nav-tab.home {
-  width: 135px;
-  background: #EDFAFF;
-  box-shadow: 3px -2px 5px rgba(189,209,233,0.5);
-}
-
-.nav-tab.view-reports {
-  flex: 1;
-  background: #EDFAFF;
-  box-shadow: 3px -2px 5px rgba(189,209,233,0.5);
-  border-radius: 0 5px 0 0;
-}
-
-.nav-tab.feedback-tab {
-  width: 135px;
-  background: #BDD1E9;
-  box-shadow: 3px -2px 5px rgba(189,209,233,0.5);
-}
-
-.nav-label {
   font-family: 'Alexandria', sans-serif;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 24px;
-  text-align: center;
-}
-
-.nav-tab.home .nav-label,
-.nav-tab.view-reports .nav-label {
+  font-weight: 700;
+  font-size: 16px;
   color: #92BBD7;
+  cursor: pointer;
 }
 
-.nav-tab.feedback-tab .nav-label {
+#step1 .nav-box.active {
+  background: #BDD1E9;
   color: #1D4066;
 }
 
-/* ── Step 1 wrapper ── */
-#step1 {
-  position: relative;
-  width: 412px;
-  max-width: 100vw;
-  min-height: 900px;
-}
+
 
 /* ── Steps 2 / 4 shown as centered container ── */
 #step2, #step4 {
   display: none;
+}
+
+/* ── Logo + title row for steps 2, 3, 4 ── */
+.logo-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.logo-mark-sm {
+  width: 40px;
+  height: 41px;
+  flex-shrink: 0;
+}
+
+.logo-mark-sm svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Modal logo + title row ── */
+.modal-logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+
+/* ── Step 1 wrapper (matches homepage viewport exactly) ── */
+#step1 {
+  position: relative;
+  width: 412px;
+  height: 917px;
+  overflow: hidden;
 }
