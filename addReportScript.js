@@ -315,7 +315,7 @@ confirmSubmit.addEventListener("click", () => {
     area: `${selectedFloor} - ${selectedClass}`,
     facility: selectedFacility,
     description: description.value.trim(),
-    status: "Issued",
+    status: "Reported",
     date: new Date().toISOString().split("T")[0],
     image: uploadedImageData || "",
     imageName: uploadedFiles[0] ? uploadedFiles[0].name : "",
