@@ -13,7 +13,7 @@ const facilityText = document.getElementById("facilityText");
 
 const uploadBox = document.getElementById("uploadBox");
 const fileInput = document.getElementById("fileInput");
-const previewArea = document.getElementById("previewArea");
+
 
 const popup = document.getElementById("popup");
 const othersBtn = document.getElementById("othersBtn");
@@ -269,8 +269,8 @@ fileInput.addEventListener("change", () => {
     return;
   }
 
-  if (file.size > 5 * 1024 * 1024) {
-    alert("Image must be less than 5MB.");
+  if (file.size > 2 * 1024 * 1024) {
+    alert("Image must be less than 2MB.");
     fileInput.value = "";
     return;
   }
@@ -311,28 +311,33 @@ submitBtn.addEventListener("click", () => {
 });
 
 confirmSubmit.addEventListener("click", () => {
-  // Save data (same as before)
   const report = {
     area: `${selectedFloor} - ${selectedClass}`,
     facility: selectedFacility,
-    description: description.value,
+    description: description.value.trim(),
     status: "Issued",
     date: new Date().toLocaleDateString(),
-    image: uploadedImageData,
+    image: uploadedImageData || "",
     imageName: uploadedFiles[0] ? uploadedFiles[0].name : "",
     imageType: uploadedFiles[0] ? uploadedFiles[0].type : ""
-    };
+  };
 
-  const reports = JSON.parse(localStorage.getItem("reports")) || [];
-  reports.push(report);
-  localStorage.setItem("reports", JSON.stringify(reports));
+  try {
+    const reports = JSON.parse(localStorage.getItem("reports")) || [];
+    reports.push(report);
+    localStorage.setItem("reports", JSON.stringify(reports));
 
     closePopupAnimated(confirmPopup);
 
     setTimeout(() => {
-    successPopup.classList.add("no-blur");
-    openPopup(successPopup);
+      successPopup.classList.add("no-blur");
+      openPopup(successPopup);
     }, 600);
+
+  } catch (error) {
+    console.error(error);
+    alert("Submit failed. The uploaded image may be too large.");
+  }
 });
 
 confirmCancel.addEventListener("click", () => {
