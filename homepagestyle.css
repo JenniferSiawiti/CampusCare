@@ -2,9 +2,10 @@ body {
     margin: 0;
     display: flex;
     justify-content: center;
-    background-color: #EEFAFF;
+    background-color: #1d2028;
     font-family: 'Alexandria', sans-serif;
     color: #1D4066;
+    padding: 20px;
 }
 
 .app-viewport {
@@ -308,4 +309,15 @@ body {
     
     /* Display inline-block helps clipping stay consistent on some browsers */
     display: inline-block; 
+}
+
+.no-image {
+  width: 100%;
+  height: 100%;
+  background: #DDF5FF;
+  color: #1D4066;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 }
