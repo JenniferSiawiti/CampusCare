@@ -142,7 +142,7 @@ floorButtons.forEach(button => {
 
         classBtn.innerHTML = `
           Toilet 
-          <img src="images-for-addreport/${isFemale ? "Girl-Icon.png" : "Boy-Icon.png"}" class="toilet-icon">
+          <img src="${isFemale ? "Girl-Icon.png" : "Boy-Icon.png"}" class="toilet-icon">
         `;
       } else {
         classBtn.textContent = className;
@@ -160,12 +160,12 @@ floorButtons.forEach(button => {
 
           areaText.innerHTML = `
             ${selectedFloor} - Toilet
-            <img src="images-for-addreport/${iconFile}" class="toilet-icon">
+            <img src="${iconFile}" class="toilet-icon">
           `;
 
           selectedAreaBtn.innerHTML = `
             ${selectedFloor} - Toilet
-            <img src="images-for-addreport/${iconFile}" class="toilet-icon">
+            <img src="${iconFile}" class="toilet-icon">
           `;
         } else {
           areaText.textContent = areaLabel;
