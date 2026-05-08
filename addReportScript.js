@@ -217,8 +217,24 @@ facilityButtons.addEventListener("click", event => {
     return;
     }
 
-  selectedFacility = btn.textContent.trim();
+selectedFacility = btn.textContent.trim();
+
+if (selectedFacility === "Toilet") {
+
+  const isFemale = selectedClass.includes("♀");
+
+  const iconFile = isFemale
+    ? "Girl-Icon.png"
+    : "Boy-Icon.png";
+
+  facilityText.innerHTML = `
+    Toilet
+    <img src="${iconFile}" class="toilet-icon">
+  `;
+
+} else {
   facilityText.textContent = selectedFacility;
+}
 
   [...facilityButtons.children].forEach(button => {
     button.classList.add("hidden");
