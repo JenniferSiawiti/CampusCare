@@ -45,13 +45,13 @@
 
         <!-- MIDDLE: SCROLLABLE -->
         <div class="scroll-content">
-            <div class="fixed-facility-section" id="fixedContainer">
+           <div class="fixed-facility-section">
                 <div class="section-header-row">
                     <div class="section-title">Fixed Facilities</div>
                     <a href="viewreport.html" class="view-all">View All</a>
                 </div>
-                <div class="fixed-card-content">
-    <button class="nav-arrow prev" onclick="scrollSection('fixedContainer', -200)">‹</button>
+                <div id="fixedContainer" class="cards-container">
+    <button class="nav-arrow prev" onclick="scrollSection('fixedContainer', -1)">‹</button>
     
     <!-- Wrapper to hold the image and the floating pills -->
     <div class="image-overlay-wrapper">
@@ -61,9 +61,9 @@
             <span class="status-pill">Desk</span>
             <span class="status-pill">Fixed</span>
         </div>
-    </div>
+    </div
 
-    <button class="nav-arrow next" onclick="scrollSection('fixedContainer', 200)">›</button>
+    <button class="nav-arrow next" onclick="scrollSection('fixedContainer', 1)">›</button>
 </div>
             </div>
 
@@ -84,8 +84,8 @@
                         <div class="info-box">(7th-SL), (Chair)</div>
                     </div>
                 </div>
-                <button class="nav-arrow progress-prev" onclick="scrollSection('issuedContainer', -200)">‹</button>
-                <button class="nav-arrow progress-next" onclick="scrollSection('issuedContainer', 200)">›</button>
+                <button class="nav-arrow progress-prev" onclick="scrollSection('issuedContainer', -1)">‹</button>
+                <button class="nav-arrow progress-next" onclick="scrollSection('issuedContainer', 1)">›</button>
             </div>
         </div>
 
