@@ -1,9 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&display=swap');
 
-/* ── Reset ── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Body ── */
 body {
   font-family: 'Alexandria', 'Segoe UI', sans-serif;
   min-height: 100vh;
@@ -15,7 +13,7 @@ body {
   padding: 20px;
 }
 
-/* ── Card container (matches homepage .app-viewport) ── */
+/* ── 412×917 phone viewport ── */
 .container {
   display: flex;
   flex-direction: column;
@@ -27,12 +25,12 @@ body {
   background: linear-gradient(#DDF5FF 5%, #EEFAFF);
   border-radius: 0;
   border: none;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
   overflow: hidden;
   position: relative;
 }
 
-/* ── "Welcome to / CampusCare" heading block ── */
+/* ── "Welcome to / CampusCare" ── */
 .welcome-block {
   display: flex;
   flex-direction: column;
@@ -103,7 +101,7 @@ body {
 
 .field-wrapper input::placeholder { color: #5a7fa0; opacity: 1; }
 
-/* ── Eye toggle button ── */
+/* ── Eye toggle ── */
 .field-wrapper .eye-toggle {
   position: absolute;
   right: 6px;
@@ -129,41 +127,74 @@ body {
 
 .field-wrapper .eye-toggle:hover .eye-icon { opacity: 1; }
 
-/* ── Shared button base ── */
-.btn-login,
+/* ── Inline field error ── */
+.field-error {
+  width: 380px;
+  font-family: 'Alexandria', sans-serif;
+  font-size: 12px;
+  color: #c0392b;
+  background: rgba(192, 57, 43, 0.08);
+  border: 1px solid rgba(192, 57, 43, 0.25);
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin-top: 2px;
+  text-align: left;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Login button ── */
+.btn-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 380px;
+  height: 40px;
+  cursor: pointer;
+  border: 1px solid #0F2E50;
+  border-radius: 5px;
+  background: #2F5A84;
+  transition: opacity 0.15s, transform 0.1s;
+  margin-top: 4px;
+}
+
+.btn-login span {
+  font-family: 'Alexandria', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  color: #BDD1E9;
+}
+
+.btn-login:hover  { opacity: 0.88; transform: scale(0.98); }
+.btn-login:active { transform: scale(0.96); }
+
+/* ── Sign Up button ── */
 .btn-signup {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 380px;
-  max-width: 100%;
   height: 40px;
   cursor: pointer;
   border: 1px solid #0F2E50;
   border-radius: 5px;
-  padding: 13px 38px 12px;
+  background: #548AAE;
   transition: opacity 0.15s, transform 0.1s;
   margin-top: 4px;
 }
 
-.btn-login span,
 .btn-signup span {
   font-family: 'Alexandria', sans-serif;
   font-weight: 400;
   font-size: 15px;
-  line-height: 18px;
   color: #BDD1E9;
 }
 
-/* ── Login button ── */
-.btn-login  { background: #2F5A84; }
-.btn-login:hover  { opacity: 0.88; transform: scale(0.98); background: #2F5A84; }
-
-/* ── Sign Up button ── */
-.btn-signup { background: #548AAE; }
-.btn-signup:hover { opacity: 0.88; transform: scale(0.98); background: #548AAE; }
-
-.btn-login:active,
+.btn-signup:hover  { opacity: 0.88; transform: scale(0.98); }
 .btn-signup:active { transform: scale(0.96); }
 
 /* ── "Or" divider ── */
@@ -171,7 +202,6 @@ body {
   display: flex;
   align-items: center;
   width: 380px;
-  max-width: 100%;
   margin: 4px 0;
 }
 
@@ -187,7 +217,6 @@ body {
   font-family: 'Alexandria', sans-serif;
   font-weight: 700;
   font-size: 12px;
-  line-height: 15px;
   color: #0F2E50;
   padding: 0 12px;
   white-space: nowrap;
@@ -197,7 +226,7 @@ body {
 .link {
   color: #2F5A84;
   cursor: pointer;
-  font-family: 'Alexandria', 'Segoe UI', sans-serif;
+  font-family: 'Alexandria', sans-serif;
   font-size: 13px;
   text-decoration: none;
 }
@@ -207,7 +236,7 @@ body {
 /* ── Paragraph text ── */
 p {
   color: #1D4066;
-  font-family: 'Alexandria', 'Segoe UI', sans-serif;
+  font-family: 'Alexandria', sans-serif;
   font-size: 16px;
   line-height: 20px;
   text-align: center;
@@ -216,3 +245,45 @@ p {
 
 p a { color: #2F5A84; font-weight: bold; text-decoration: none; }
 p a:hover { text-decoration: underline; }
+
+/* ════════════════════════════════════════
+   BOTTOM NAV — copied from homepage
+   ════════════════════════════════════════ */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 412px;
+  height: 64px;
+  display: flex;
+  border-top: 1px solid #BDD1E9;
+  z-index: 50;
+}
+
+.nav-box {
+  flex: 1;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Alexandria', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #92BBD7;
+  cursor: pointer;
+  text-decoration: none;
+  background: #EDFAFF;
+  border: none;
+  transition: background 0.15s, color 0.15s;
+  user-select: none;
+}
+
+.nav-box.active {
+  background: #BDD1E9;
+  color: #1D4066;
+}
+
+.nav-box:hover:not(.active) {
+  background: #DDF5FF;
+  color: #548AAE;
+}
