@@ -1,352 +1,139 @@
-const areaHeader = document.getElementById("areaHeader");
-const areaContent = document.getElementById("areaContent");
-const floorButtons = document.querySelectorAll("#floorButtons button");
-const classButtons = document.getElementById("classButtons");
-const areaText = document.getElementById("areaText");
-const selectedAreaWrapper = document.getElementById("selectedAreaWrapper");
-const selectedAreaBtn = document.getElementById("selectedAreaBtn");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="addReportStyle.css">
+</head>
+<body>
+    <div class="phone">
+        <header>
+            <div class="logo"><img src="CampusCare_Logo.png" alt="CampuCare Logo" class="logo-img"></div>
+        </header>
 
-const facilityHeader = document.getElementById("facilityHeader");
-const facilityContent = document.getElementById("facilityContent");
-const facilityButtons = document.getElementById("facilityButtons");
-const facilityText = document.getElementById("facilityText");
+        <main>
+            <!--Area-->
+            <section class="dropdown-section area-section">
+            <button class="dropdown-header" id="areaHeader">
+                <span id="areaText">Area</span>
+                <span class="dropdown-icon" id="areaIcon"></span>
+            </button>
 
-const uploadBox = document.getElementById("uploadBox");
-const fileInput = document.getElementById("fileInput");
+            <div class="area-content hidden" id="areaContent">
+                <div class="floor-list" id="floorButtons">
+                <button data-floor="19th">19th</button>
+                <button data-floor="7th">7th</button>
+                <button data-floor="6th">6th</button>
+                <button data-floor="LG">LG</button>
+                </div>
 
+                <div class="class-list hidden" id="classButtons"></div>
 
-const popup = document.getElementById("popup");
-const othersBtn = document.getElementById("othersBtn");
-const otherInput = document.getElementById("otherInput");
-const closePopup = document.getElementById("closePopup");
-const saveOther = document.getElementById("saveOther");
+                <div class="selected-area-wrapper hidden" id="selectedAreaWrapper">
+                <button class="selected-area-btn" id="selectedAreaBtn"></button>
+                </div>
+            </div>
+            </section>
 
-const submitBtn = document.getElementById("submitBtn");
-const description = document.getElementById("description");
+            <!--Facility-->
+            <section class="dropdown-section">
+                <button class="dropdown-header" id="facilityHeader">
+                    <span id="facilityText">Facility</span>
+                    <span class="dropdown-icon" id="facilityIcon"></span>
+                </button>
 
-const uploadDefault = document.getElementById("uploadDefault");
-const uploadPreview = document.getElementById("uploadPreview");
+                <div class="dropdown-content hidden" id="facilityContent">
+                    <div class="button-grid facility-grid" id="facilityButtons">
+                        <button>Desk</button>
+                        <button>Chair</button>
+                        <button>Projector</button>
+                        <button>Socket</button>
+                        <button>Lights</button>
+                        <button>Dispenser</button>
+                        <button>Wifi</button>
+                        <button>AC</button>
+                        <button>Toilet <img src="Girl-Icon.png"></button>
+                        <button>Toilet <img src="Boy-Icon.png"></button>
+                        <button>Vending Machine</button>
+                        <button id="othersBtn">Others...</button>
+                    </div>
+                </div>
+            </section>
 
-const areaIcon = document.getElementById("areaIcon");
-const facilityIcon = document.getElementById("facilityIcon");
+            <!--Upload-->
+            <section class="upload-box" id="uploadBox">
+            <input type="file" id="fileInput" accept="image/*" hidden />
 
-const confirmPopup = document.getElementById("confirmPopup");
-const confirmSubmit = document.getElementById("confirmSubmit");
-const confirmCancel = document.getElementById("confirmCancel");
+            <div id="uploadDefault">
+                <img class="upload-icon" src="Upload imagesphotos.png">
+                <p>Upload photos/videos</p>
+                <small>Max 1 photo & 1MB</small>
+            </div>
 
-const successPopup = document.getElementById("successPopup");
-const successOk = document.getElementById("successOk");
+            <div id="uploadPreview" class="upload-preview hidden"></div>
+            </section>
 
-const cancelBtn = document.getElementById("cancelBtn");
-
-let selectedFloor = "";
-let selectedClass = "";
-let selectedFacility = "";
-let uploadedFiles = [];
-let uploadedImageData = "";
-
-const classesByFloor = {
-  "19th": [
-    "01", "02", "03", "04", "15",
-    "16", "17", "18", "19", "20",
-    "SL", "Clinic", "Counseling",
-    "Lecturer Office", "Tutoring Room",
-    "Toilet ♀", "Toilet ♂", "Musholla", "Other"
-  ],
-  "7th": [
-    "02", "03", "SL", "Dean Office",
-    "CC I", "CC II", "Prayer Room",
-    "Toilet ♀", "Toilet ♂", "GA Storage", "Science Lab",
-    "CPS Lab", "Lecturers Office", "HOU Office", "Other"
-  ],
-  "6th": [
-    "Library", "Office",
-    "Toilet ♀", "Toilet ♂",
-    "Meeting Room Soekarno",
-    "Meeting Room Sjahrir",
-    "Meeting Room Hatta",
-    "Library Staff Office",
-    "Student Affairs Office",
-    "Other"
-  ],
-  "LG": [
-    "CS Lab", "IS Lab", "MEI", "CL",
-    "WL", "Toilet ♀", "Toilet ♂",
-    "CS & IS Lab", "IE Lab",
-    "Lab LG", "Mechatronic Lab",
-    "Facilities Office",
-    "Wet Lab", "Other"
-  ]
-};
-
-cancelBtn.addEventListener("click", () => {
-  window.location.href = "homepage.html";
-});
-
-function openPopup(popupElement) {
-  popupElement.classList.remove("hidden");
-
-  setTimeout(() => {
-    popupElement.classList.add("active");
-  }, 10);
-}
-
-function closePopupAnimated(popupElement) {
-  popupElement.classList.remove("active");
-
-  setTimeout(() => {
-    popupElement.classList.add("hidden");
-  }, 600);
-}
-
-areaHeader.addEventListener("click", () => {
-  areaContent.classList.toggle("hidden");
-
-  areaIcon.classList.toggle("open");
-});
-
-function resetAreaDropdown() {
-  floorButtons.forEach(btn => {
-    btn.classList.remove("hidden", "selected");
-  });
-
-  classButtons.innerHTML = "";
-  classButtons.classList.add("hidden");
-  selectedAreaWrapper.classList.add("hidden");
-}
-
-floorButtons.forEach(button => {
-  button.addEventListener("click", () => {
-    selectedFloor = button.dataset.floor;
-
-    floorButtons.forEach(btn => {
-      btn.classList.add("hidden");
-      btn.classList.remove("selected");
-    });
-
-    button.classList.remove("hidden");
-    button.classList.add("selected");
-
-    classButtons.innerHTML = "";
-
-    classesByFloor[selectedFloor].forEach(className => {
-      const classBtn = document.createElement("button");
-      if (className.includes("Toilet")) {
-        const isFemale = className.includes("♀");
-
-        classBtn.innerHTML = `
-          Toilet 
-          <img src="${isFemale ? "Girl-Icon.png" : "Boy-Icon.png"}" class="toilet-icon">
-        `;
-      } else {
-        classBtn.textContent = className;
-      }
-
-      classBtn.addEventListener("click", () => {
-        selectedClass = className;
         
+        <!--Description-->
+        <textarea id="description" placeholder="Enter Description"></textarea>
+        
+        <div class="actions">
+            <button class="cancel-btn" id="cancelBtn">Cancel</button>
+            <button class="submit-btn" id="submitBtn">Submit</button>
+        </div>
+    </main>
 
-        const areaLabel = `${selectedFloor} - ${selectedClass}`;
+    <!--Popup for Others-->
+    <div class="popup hidden" id="popup">
+        <div class="popup-content">
+            <h3>Enter Facility Name</h3>
+            <input type="text" id="otherInput" placeholder="Example: Door handle" />
 
-        if (selectedClass.includes("Toilet")) {
-          const isFemale = selectedClass.includes("♀");
-          const iconFile = isFemale ? "Girl-Icon.png" : "Boy-Icon.png";
+            <div class="popup-actions">
+                <button id="closePopup">Cancel</button>
+                <button id="saveOther">Save</button>
+            </div>
+        </div>
+    </div>
 
-          areaText.innerHTML = `
-            ${selectedFloor} - Toilet
-            <img src="${iconFile}" class="toilet-icon">
-          `;
+    <!--Submit Popup-->
+    <div class="popup hidden" id="confirmPopup">
+    <div class="confirm-modal">
+        <div class="confirm-message">
+        Do you wish to submit?
+        </div>
 
-          selectedAreaBtn.innerHTML = `
-            ${selectedFloor} - Toilet
-            <img src="${iconFile}" class="toilet-icon">
-          `;
-        } else {
-          areaText.textContent = areaLabel;
-          selectedAreaBtn.textContent = areaLabel;
-        }
+        <div class="confirm-actions">
+        <button id="confirmCancel">Cancel</button>
+        <button id="confirmSubmit">Submit</button>
+        </div>
+    </div>
+    </div>
 
-        floorButtons.forEach(btn => btn.classList.add("hidden"));
-        classButtons.innerHTML = "";
-        classButtons.classList.add("hidden");
+    <!-- Success Popup -->
+    <div class="popup hidden no-blur" id="successPopup">
+    <div class="success-layout">
 
-        selectedAreaWrapper.classList.remove("hidden");
-      });
+        <header class="success-header">
+        <img src="CampusCare_Logo.png" class="logo-img">
+        </header>
 
-      classButtons.appendChild(classBtn);
-    });
+        <div class="success-container">
+        <h2 class="success-title">Reported</h2>
 
-    classButtons.classList.remove("hidden");
-  });
-});
+        <div class="success-box">
+            <p>Your report will be reviewed shortly.</p>
+        </div>
 
-selectedAreaBtn.addEventListener("click", () => {
-  resetAreaDropdown();
-});
+        <button id="successOk" class="success-btn">Okay.</button>
+        </div>
 
-facilityHeader.addEventListener("click", () => {
-  facilityContent.classList.toggle("hidden");
+    </div>
+    </div>
+    </div>
 
-  facilityIcon.classList.toggle("open");
-});
-
-function resetFacilityDropdown() {
-  [...facilityButtons.children].forEach(button => {
-    button.classList.remove("hidden", "selected");
-  });
-}
-
-facilityButtons.addEventListener("click", event => {
-  const btn = event.target.closest("button");
-  if (!btn) return;
-
-  // If user clicks the already selected facility, show all options again
-  if (btn.classList.contains("selected")) {
-    resetFacilityDropdown();
-    return;
-  }
-
-  if (btn.id === "othersBtn") {
-    openPopup(popup);
-    return;
-    }
-
-  selectedFacility = btn.textContent.trim();
-  facilityText.textContent = selectedFacility;
-
-  [...facilityButtons.children].forEach(button => {
-    button.classList.add("hidden");
-    button.classList.remove("selected");
-  });
-
-  btn.classList.remove("hidden");
-  btn.classList.add("selected");
-});
-
-closePopup.addEventListener("click", () => {
-  closePopupAnimated(popup);
-});
-
-saveOther.addEventListener("click", () => {
-  const customFacility = otherInput.value.trim();
-
-  if (customFacility === "") {
-    alert("Please enter the facility name.");
-    return;
-  }
-
-  selectedFacility = customFacility;
-  facilityText.textContent = "Others...";
-
-  [...facilityButtons.children].forEach(button => {
-    button.classList.add("hidden");
-  });
-
-  othersBtn.classList.remove("hidden");
-  othersBtn.classList.add("selected");
-
-  closePopupAnimated(popup);
-});
-
-uploadBox.addEventListener("click", () => {
-  fileInput.click();
-});
-
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files[0];
-
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    alert("Only images are allowed.");
-    fileInput.value = "";
-    return;
-  }
-
-  if (file.size > 1 * 1024 * 1024) {
-    alert("Image must be less than 1MB.");
-    fileInput.value = "";
-    return;
-  }
-
-  uploadedFiles = [file];
-
-  const reader = new FileReader();
-
-  reader.onload = function (event) {
-    uploadedImageData = event.target.result;
-
-    const fileExtension = file.name.split(".").pop().toUpperCase();
-
-    uploadDefault.classList.add("hidden");
-    uploadPreview.classList.remove("hidden");
-
-    uploadPreview.innerHTML = `
-      <img src="${uploadedImageData}" alt="Uploaded image">
-      <p>${file.name} (${fileExtension}) uploaded</p>
-    `;
-  };
-
-  reader.readAsDataURL(file);
-});
-
-submitBtn.addEventListener("click", () => {
-  if (!selectedFloor || !selectedClass) {
-    alert("Please choose an area.");
-    return;
-  }
-
-  if (!selectedFacility) {
-    alert("Please choose a facility.");
-    return;
-  }
-
-  openPopup(confirmPopup);
-});
-
-confirmSubmit.addEventListener("click", () => {
-  const report = {
-    area: `${selectedFloor} - ${selectedClass}`,
-    facility: selectedFacility,
-    description: description.value.trim(),
-    status: "Reported",
-    date: new Date().toISOString().split("T")[0],
-    image: uploadedImageData || "",
-    imageName: uploadedFiles[0] ? uploadedFiles[0].name : "",
-    imageType: uploadedFiles[0] ? uploadedFiles[0].type : ""
-  };
-
-  try {
-    const reports = JSON.parse(localStorage.getItem("reports")) || [];
-    reports.push(report);
-    localStorage.setItem("reports", JSON.stringify(reports));
-
-    closePopupAnimated(confirmPopup);
-
-    setTimeout(() => {
-      successPopup.classList.add("no-blur");
-      openPopup(successPopup);
-    }, 600);
-
-  } catch (error) {
-    console.error(error);
-    alert("Submit failed. The uploaded image may be too large.");
-  }
-});
-
-confirmCancel.addEventListener("click", () => {
-  closePopupAnimated(confirmPopup);
-});
-
-successOk.addEventListener("click", () => {
-  window.location.href = "homepage.html";
-});
-
-const reports = JSON.parse(localStorage.getItem("reports")) || [];
-
-reports.forEach(report => {
-  console.log(report.area);
-  console.log(report.facility);
-  console.log(report.description);
-  console.log(report.status);
-});
+    <script src="addReportScript.js"></script>
+</body>
+</html>
