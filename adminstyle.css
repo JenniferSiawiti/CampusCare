@@ -14,21 +14,32 @@ body {
 .phone {
   width: 412px;
   height: 917px;
-  background: linear-gradient(to bottom, #DDF5FF 0%, #EEFAFF 35%);
+  background: linear-gradient(180deg, #DDF5FF 0%, #FFFFFF 30.42%);
   padding: 18px;
   position: relative;
   overflow: hidden;
 }
 
+/* ── HEADER / LOGO AREA ── */
 .logo-container {
   display: flex;
   justify-content: center;
-  margin-top: 35px;
+  align-items: center;
+  padding-top: 35px;
   margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .main-logo {
-  width: 350px;
+  width: 320px;
+  object-fit: contain;
+}
+
+/* Push panels below the header */
+#panelReports,
+#panelFeedback {
+  margin-top: 0;
 }
 
 .top-actions {
@@ -54,6 +65,10 @@ body {
   cursor: pointer;
 }
 
+.sort-btn i {
+  transition: transform 0.2s ease;
+}
+
 .search-box {
   width: 267px;
   height: 38px;
@@ -75,15 +90,24 @@ body {
 }
 
 .sort-dropdown {
-  display: none;
   position: absolute;
   top: 44px;
-  width: 102px; 
+  width: 102px;
   background: white;
   border: 2px solid #1D4066;
   border-radius: 8px;
   z-index: 100;
   overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: max-height 400ms ease, opacity 400ms ease;
+}
+
+.sort-dropdown.open {
+  max-height: 300px;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .sort-item {
@@ -98,10 +122,56 @@ body {
   background: #DDF5FF;
 }
 
+/* ════════════════════════════════════════
+   TAB BAR
+   ════════════════════════════════════════ */
+.tab-bar {
+  display: flex;
+  width: 100%;
+  margin-bottom: 0;
+  gap: 0;
+}
+
+.tab-btn {
+  flex: 1;
+  height: 46px;
+  border: 1px solid #1D4066;
+  background: #E5F5FF;
+  color: #1D4066;
+  font-family: 'Alexandria', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+#tabReports,
+#tabReportsFb {
+  border-radius: 15px 0 0 0;
+}
+
+#tabFeedback,
+#tabFeedbackFb {
+  border-radius: 0 15px 0 0;
+}
+
+.tab-btn.active {
+  background: #1D4066;
+  color: white;
+  border-color: #1D4066;
+}
+
+.tab-btn:not(.active):hover {
+  background: #DDF5FF;
+}
+
+/* ════════════════════════════════════════
+   TABLE SECTION
+   ════════════════════════════════════════ */
 .table-section {
   width: 100%;
   max-height: 620px;
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
   overflow: hidden;
   background: #5B9BC0;
 }
@@ -109,28 +179,27 @@ body {
 .admin-list {
   max-height: 578px;
   overflow-y: auto;
-
-  border-radius: 0 0 10px 10px;
 }
 
+/* Reports: Area | Facility | Status | View — fixed columns, no gap */
 .table-header,
 .report-row {
   display: grid;
-  grid-template-columns: 1.1fr 1fr 1fr 0.9fr;
+  grid-template-columns: 90px 90px 90px 1fr;
   align-items: center;
-}
-
-.table-header {
-  height: 42px;
-  background: #1D4066;
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
   padding: 0 10px;
 }
 
+.table-header {
+  height: 46px;
+  background: #1D4066;
+  color: white;
+  font-weight: 400;
+  font-size: 15px;
+}
+
 .admin-list {
-  height: calc(100% - 42px);
+  height: calc(100% - 46px);
   overflow-y: auto;
 }
 
@@ -139,41 +208,43 @@ body {
 }
 
 .report-row {
-  min-height: 42px;
+  height: 46px;
   color: white;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 0 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  font-size: 15px;
+  font-weight: 400;
+  background: #548AAE;
+  border-bottom: 1px solid #BDD1E9;
 }
 
+/* ════════════════════════════════════════
+   STATUS BUTTON
+   ════════════════════════════════════════ */
 .status-wrapper {
-  position: relative;
+  position: static;
 }
 
 .status-btn {
-  width: 78px;
-  height: 24px;
+  width: 81.58px;
+  height: 25px;
   border: none;
-  border-radius: 20px;
-  background: white;
-  color: #1D4066;
+  border-radius: 26px;
+  background: #FFFFFF;
+  color: #0F2E50;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 400;
+  font-family: 'Alexandria', sans-serif;
   cursor: pointer;
 }
 
 .status-menu {
   display: none;
-  position: absolute;
-  top: 28px;
-  left: -12px;
+  position: fixed;
   width: 100px;
   background: white;
   border: 2px solid #1D4066;
   border-radius: 18px;
   overflow: hidden;
-  z-index: 999;
+  z-index: 9999;
 }
 
 .status-option {
@@ -189,18 +260,23 @@ body {
 }
 
 .view-detail {
-  color: white;
+  color: #D1E0FF;
   text-decoration: underline;
-  font-size: 10px;
+  font-size: 10.28px;
+  font-weight: 700;
   cursor: pointer;
   border: none;
   background: none;
+  font-family: 'Alexandria', sans-serif;
 }
 
 .hidden {
   display: none !important;
 }
 
+/* ════════════════════════════════════════
+   POPUP / DETAIL MODAL
+   ════════════════════════════════════════ */
 .popup {
   position: absolute;
   inset: 0;
@@ -277,17 +353,106 @@ body {
   font-weight: 600;
 }
 
-.status-wrapper {
-  position: static;
+/* ════════════════════════════════════════
+   FEEDBACK PANEL
+   ════════════════════════════════════════ */
+.fb-top-actions {
+  display: flex;
+  margin-bottom: 12px;
 }
 
-.status-menu {
-  display: none;
-  position: fixed;
-  width: 100px;
-  background: white;
+/* Feedback: Type badge | Date | View — fixed columns */
+.fb-header {
+  grid-template-columns: 110px 1fr 52px !important;
+  gap: 0 !important;
+  padding: 0 10px !important;
+}
+
+.fb-row {
+  grid-template-columns: 110px 1fr 52px !important;
+  gap: 0 !important;
+  padding: 0 10px !important;
+  align-items: center;
+}
+
+.fb-type-badge {
+  font-size: 15px;
+  font-weight: 400;
+  color: white;
+}
+
+.badge-anon,
+.badge-identity {
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  color: white;
+}
+
+.fb-date {
+  font-size: 15px;
+  color: #FFFFFF;
+}
+
+/* ── Feedback detail popup ── */
+.fb-detail-card {
+  background: #DDF5FF;
   border: 2px solid #1D4066;
-  border-radius: 18px;
-  overflow: hidden;
-  z-index: 9999;
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+}
+
+.fb-detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #1D4066;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #BDD1E9;
+}
+
+.fb-email-row {
+  color: #2F5A84;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.fb-detail-body {
+  color: #1D4066;
+  font-size: 13px;
+  font-weight: 500;
+  min-height: 120px;
+  max-height: 260px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: rgba(255,255,255,0.5);
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #BDD1E9;
+  margin-bottom: 14px;
+}
+
+.fb-delete-btn {
+  width: 100%;
+  height: 34px;
+  border: 1.5px solid #c0392b;
+  border-radius: 5px;
+  background: white;
+  color: #c0392b;
+  font-family: 'Alexandria', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.fb-delete-btn:hover {
+  background: #c0392b;
+  color: white;
 }
