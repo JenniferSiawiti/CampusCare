@@ -66,53 +66,48 @@ function globalSearch() {
 }
 
 function globalSort(crit) {
-    const cont = document.getElementById('issuedContainer');
+  const containers = [
+    document.getElementById("fixedContainer"),
+    document.getElementById("issuedContainer")
+  ];
+
+  containers.forEach(cont => {
     if (!cont) return;
 
-    const cards = Array.from(cont.querySelectorAll('.report-card'));
+    const cards = Array.from(
+      cont.querySelectorAll(".report-card, .fixed-card-content")
+    );
 
-    cards.sort((a, b) => {
-
-        const dateA = new Date(a.dataset.date);
-        const dateB = new Date(b.dataset.date);
-
-        // =========================
-        // LATEST = NEWEST FIRST
-        // =========================
-        if (crit === 'latest') {
-            return dateB - dateA;
-        }
-
-        // =========================
-        // RECENT = OLDEST FIRST
-        // =========================
-        if (crit === 'recent') {
-            return dateA - dateB;
-        }
-
-        // =========================
-        // FLOOR SORTING
-        // =========================
-        const floorA = (a.dataset.floor || '').trim().toUpperCase();
-        const floorB = (b.dataset.floor || '').trim().toUpperCase();
-        const target = crit.trim().toUpperCase();
-
-        const aMatch = floorA.includes(target);
-        const bMatch = floorB.includes(target);
-
-        if (aMatch && !bMatch) return -1;
-        if (!aMatch && bMatch) return 1;
-
-        return 0;
+    cards.forEach(card => {
+      card.style.display = "";
     });
 
-    cards.forEach(card => cont.appendChild(card));
+    if (crit === "latest" || crit === "recent") {
+      cards.sort((a, b) => {
+        const dateA = new Date(a.dataset.date || "2000-01-01");
+        const dateB = new Date(b.dataset.date || "2000-01-01");
 
-    // Close dropdown after sorting
-    const menu = document.getElementById('sortMenu');
-    if (menu) {
-        menu.style.display = 'none';
+        return crit === "latest" ? dateB - dateA : dateA - dateB;
+      });
+
+      cards.forEach(card => cont.appendChild(card));
+    } else {
+      const target = crit.toLowerCase();
+
+      cards.forEach(card => {
+        const floor = (card.dataset.floor || "").toLowerCase();
+
+        if (floor.includes(target)) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+      });
     }
+  });
+
+  const menu = document.getElementById("sortMenu");
+  if (menu) menu.style.display = "none";
 }
 
 function scrollSection(id, direction) {
@@ -163,7 +158,13 @@ function loadReportsToHomepage() {
 
     const fixedCard = document.createElement("div");
 
-    fixedCard.classList.add("fixed-card-content");
+        fixedCard.classList.add("fixed-card-content");
+
+        fixedCard.dataset.date = report.date;
+
+        fixedCard.dataset.floor = report.area
+        ? report.area.split(" - ")[0]
+        : "";
 
     fixedCard.innerHTML = `
       <button class="nav-arrow prev" onclick="scrollSection('fixedContainer', -200)">‹</button>
