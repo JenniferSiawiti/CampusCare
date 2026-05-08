@@ -85,9 +85,20 @@ function globalSort(crit) {
     toggleSort();
 }
 
-function scrollSection(id, amt) {
-    const el = document.getElementById(id);
-    if (el) el.scrollBy({ left: amt, behavior: 'smooth' });
+function scrollSection(id, direction) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  const card = el.querySelector(".report-card, .fixed-card-content");
+  if (!card) return;
+
+  const gap = 15;
+  const scrollAmount = card.offsetWidth + gap;
+
+  el.scrollBy({
+    left: direction > 0 ? scrollAmount : -scrollAmount,
+    behavior: "smooth"
+  });
 }
 
 // Global click handler for dropdowns
@@ -99,24 +110,75 @@ window.onclick = (e) => {
 }
 
 function loadReportsToHomepage() {
+
   const issuedContainer = document.getElementById("issuedContainer");
-  if (!issuedContainer) return;
+  const fixedContainer = document.getElementById("fixedContainer");
+
+  if (!issuedContainer || !fixedContainer) return;
 
   const reports = JSON.parse(localStorage.getItem("reports")) || [];
 
+  // =========================
+  // CLEAR CONTAINERS
+  // =========================
   issuedContainer.innerHTML = "";
+  fixedContainer.innerHTML = "";
 
-  const activeReports = reports.filter(report => report.status !== "Fixed");
+  // =========================
+  // FIXED REPORTS
+  // =========================
+  const fixedReports = reports.filter(report => report.status === "Fixed");
+
+  fixedReports.forEach(report => {
+
+    const fixedCard = document.createElement("div");
+
+    fixedCard.classList.add("fixed-card-content");
+
+    fixedCard.innerHTML = `
+      <button class="nav-arrow prev" onclick="scrollSection('fixedContainer', -200)">‹</button>
+
+      <div class="image-overlay-wrapper">
+        ${
+          report.image
+          ? `<img src="${report.image}" class="fixed-photo">`
+          : `<div class="no-image">No image</div>`
+        }
+
+        <div class="status-overlay">
+          <span class="status-pill">${report.area}</span>
+          <span class="status-pill">${report.facility}</span>
+          <span class="status-pill">Fixed</span>
+        </div>
+      </div>
+
+      <button class="nav-arrow next" onclick="scrollSection('fixedContainer', 200)">›</button>
+    `;
+
+    fixedContainer.appendChild(fixedCard);
+  });
+
+  // =========================
+  // ACTIVE REPORTS
+  // =========================
+  const activeReports = reports.filter(
+    report => report.status !== "Fixed"
+  );
 
   activeReports.forEach(report => {
+
     const card = document.createElement("div");
+
     card.classList.add("report-card", "searchable-card");
 
     card.dataset.date = report.date;
-    card.dataset.floor = report.area.split(" - ")[0];
+
+    card.dataset.floor = report.area
+      ? report.area.split(" - ")[0]
+      : "";
 
     card.innerHTML = `
-      <div class="date-box">${report.date}</div>
+      <div class="date-box">${report.date || "-"}</div>
 
       <div class="img-box">
         ${
@@ -124,10 +186,13 @@ function loadReportsToHomepage() {
           ? `<img src="${report.image}">`
           : `<div class="no-image">No image</div>`
         }
+
         <span class="report-status">${report.status}</span>
       </div>
 
-      <div class="info-box">(${report.area}), (${report.facility})</div>
+      <div class="info-box">
+        (${report.area || "-"}), (${report.facility || "-"})
+      </div>
     `;
 
     issuedContainer.appendChild(card);
