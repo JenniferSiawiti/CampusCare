@@ -68,21 +68,51 @@ function globalSearch() {
 function globalSort(crit) {
     const cont = document.getElementById('issuedContainer');
     if (!cont) return;
-    
+
     const cards = Array.from(cont.querySelectorAll('.report-card'));
+
     cards.sort((a, b) => {
+
         const dateA = new Date(a.dataset.date);
         const dateB = new Date(b.dataset.date);
-        if (crit === 'latest') return dateB - dateA;
-        if (crit === 'recent') return dateA - dateB;
-        if (['19th', '7th', '6th', 'lg'].includes(crit)) {
-            return a.dataset.floor === crit ? -1 : 1;
+
+        // =========================
+        // LATEST = NEWEST FIRST
+        // =========================
+        if (crit === 'latest') {
+            return dateB - dateA;
         }
+
+        // =========================
+        // RECENT = OLDEST FIRST
+        // =========================
+        if (crit === 'recent') {
+            return dateA - dateB;
+        }
+
+        // =========================
+        // FLOOR SORTING
+        // =========================
+        const floorA = (a.dataset.floor || '').trim().toUpperCase();
+        const floorB = (b.dataset.floor || '').trim().toUpperCase();
+        const target = crit.trim().toUpperCase();
+
+        const aMatch = floorA.includes(target);
+        const bMatch = floorB.includes(target);
+
+        if (aMatch && !bMatch) return -1;
+        if (!aMatch && bMatch) return 1;
+
         return 0;
     });
-    
+
     cards.forEach(card => cont.appendChild(card));
-    toggleSort();
+
+    // Close dropdown after sorting
+    const menu = document.getElementById('sortMenu');
+    if (menu) {
+        menu.style.display = 'none';
+    }
 }
 
 function scrollSection(id, direction) {
