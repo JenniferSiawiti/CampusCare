@@ -321,3 +321,14 @@ body {
   justify-content: center;
   font-weight: bold;
 }
+
+#fixedContainer,
+#issuedContainer {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+#fixedContainer .fixed-card-content,
+#issuedContainer .report-card {
+  scroll-snap-align: start;
+}
