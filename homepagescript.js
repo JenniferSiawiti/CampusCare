@@ -111,17 +111,42 @@ function globalSort(crit) {
 }
 
 function scrollSection(id, direction) {
-  const el = document.getElementById(id);
-  if (!el) return;
+  const container = document.getElementById(id);
+  if (!container) return;
 
-  const card = el.querySelector(".report-card, .fixed-card-content");
-  if (!card) return;
+  const cards = Array.from(
+    container.querySelectorAll(".report-card, .fixed-card-content")
+  ).filter(card => card.style.display !== "none");
 
-  const gap = 15;
-  const scrollAmount = card.offsetWidth + gap;
+  if (cards.length === 0) return;
 
-  el.scrollBy({
-    left: direction > 0 ? scrollAmount : -scrollAmount,
+  const currentScroll = container.scrollLeft;
+
+  let currentIndex = 0;
+  let closestDistance = Infinity;
+
+  cards.forEach((card, index) => {
+    const distance = Math.abs(card.offsetLeft - currentScroll);
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      currentIndex = index;
+    }
+  });
+
+  let nextIndex = currentIndex + direction;
+
+  // If already at last card, go back to first
+  if (nextIndex >= cards.length) {
+    nextIndex = 0;
+  }
+
+  // If already at first card, go to last
+  if (nextIndex < 0) {
+    nextIndex = cards.length - 1;
+  }
+
+  container.scrollTo({
+    left: cards[nextIndex].offsetLeft,
     behavior: "smooth"
   });
 }
@@ -167,7 +192,7 @@ function loadReportsToHomepage() {
         : "";
 
     fixedCard.innerHTML = `
-      <button class="nav-arrow prev" onclick="scrollSection('fixedContainer', -200)">‹</button>
+      <button class="nav-arrow prev" onclick="scrollSection('fixedContainer', -1)">‹</button>
 
       <div class="image-overlay-wrapper">
         ${
@@ -183,7 +208,7 @@ function loadReportsToHomepage() {
         </div>
       </div>
 
-      <button class="nav-arrow next" onclick="scrollSection('fixedContainer', 200)">›</button>
+      <button class="nav-arrow next" onclick="scrollSection('fixedContainer', 1)">›</button>
     `;
 
     fixedContainer.appendChild(fixedCard);
