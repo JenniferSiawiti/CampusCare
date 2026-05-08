@@ -158,6 +158,8 @@ body {
   top: 209px;
 }
 
+
+
 /* ── With Identity: email field ── */
 #step2 #emailField {
   position: absolute;
@@ -168,6 +170,11 @@ body {
   display: none; /* shown via JS */
 }
 
+#fbEmail-error,
+#feedback-error {
+  left: calc(50% - 380px/2);
+}
+
 /* ── With Identity: feedback textarea (shorter) ── */
 #step2 #feedbackWrap.with-identity {
   position: absolute;
@@ -175,6 +182,29 @@ body {
   height: 288px;
   left: calc(50% - 380px/2);
   top: 340px;
+}
+
+/* ── Inline field error (matches auth.css) ── */
+.field-error {
+  width: 380px;
+  font-family: 'Alexandria', sans-serif;
+  font-size: 12px;
+  color: #c0392b;
+  background: rgba(192, 57, 43, 0.08);
+  border: 1px solid rgba(192, 57, 43, 0.25);
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin-top: 2px;
+  text-align: left;
+  position: absolute;
+  left: calc(50% - 380px/2);
+  animation: fbFadeIn 0.15s ease;
+  z-index: 10;
+}
+
+@keyframes fbFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ── Shared input / textarea styles ── */

@@ -59,7 +59,7 @@ function togglePassword(inputId, btn) {
   }
 }
 
-// ── Inline field error helpers ─────────────────────────────────
+// ── Inline field error helpers (login/signup) ──────────────────
 function showError(fieldId, msg) {
   const existing = document.getElementById(fieldId + "-error");
   if (existing) existing.remove();
@@ -104,14 +104,12 @@ function login() {
 
   if (!valid) return;
 
-  // Admin check
   if (isAdminAccount(email, password)) {
     setSession(email, "admin");
     window.location.href = "admin.html";
     return;
   }
 
-  // Registered user check
   const users = getUsers();
   const key   = email.toLowerCase();
 
@@ -196,8 +194,6 @@ function logout() {
 }
 
 // ── AUTH GUARD ────────────────────────────────────────────────
-// authGuard()          → any logged-in user
-// authGuard("admin")   → admin only
 function authGuard(requiredRole) {
   const session = getSession();
   if (!session) { window.location.href = "login.html"; return; }
@@ -207,78 +203,151 @@ function authGuard(requiredRole) {
 }
 
 // ════════════════════════════════════════
-// FEEDBACK LOGIC
+// FEEDBACK — localStorage only, no server
 // ════════════════════════════════════════
 let anonymousChoice = false;
+
+// Base top positions (px) for absolutely-positioned step 2 elements
+const FB_BASE = {
+  feedbackAnon:     209,
+  feedbackIdentity: 340,
+  btnRow:           648,
+  errorH:           34   // height of one error banner + gap
+};
+
+function fbRecalcPositions() {
+  const feedbackWrap = document.getElementById("feedbackWrap");
+  const btnRow       = document.querySelector("#step2 .btn-row");
+  if (!feedbackWrap || !btnRow) return;
+
+  const emailShift    = document.getElementById("fbEmail-error")    ? FB_BASE.errorH : 0;
+  const feedbackShift = document.getElementById("feedback-error")   ? FB_BASE.errorH : 0;
+  const feedbackBase  = anonymousChoice ? FB_BASE.feedbackAnon : FB_BASE.feedbackIdentity;
+
+  feedbackWrap.style.top = (feedbackBase + emailShift) + "px";
+  btnRow.style.top       = (FB_BASE.btnRow + emailShift + feedbackShift) + "px";
+}
+
+function showFbError(fieldId, msg) {
+  const old = document.getElementById(fieldId + "-error");
+  if (old) old.remove();
+  if (!msg) { fbRecalcPositions(); return; }
+
+  const err = document.createElement("div");
+  err.className   = "field-error";
+  err.id          = fieldId + "-error";
+  err.textContent = msg;
+  document.getElementById("step2").appendChild(err);
+
+  // Position just below the field
+  const field   = document.getElementById(fieldId);
+  const wrapper = field.closest(".field-wrap") || field.parentNode;
+  const top     = parseInt(wrapper.style.top || getComputedStyle(wrapper).top);
+  const h       = wrapper.offsetHeight || 73;
+  err.style.top  = (top + h + 4) + "px";
+
+  fbRecalcPositions();
+}
+
+function clearFbErrors() {
+  document.querySelectorAll("#step2 .field-error").forEach(e => e.remove());
+  fbRecalcPositions();
+}
 
 function chooseAnon(choice) {
   anonymousChoice = choice;
   document.getElementById("step1").style.display = "none";
-  document.getElementById("step2").style.display = "flex";
+  document.getElementById("step2").style.display = "block";
 
-  const emailField    = document.getElementById("emailField");
-  const feedbackBgImg = document.getElementById("feedbackBgImg");
+  const emailField   = document.getElementById("emailField");
+  const feedbackWrap = document.getElementById("feedbackWrap");
+  const btnRow       = document.querySelector("#step2 .btn-row");
 
   if (choice) {
     emailField.style.display = "none";
-    if (feedbackBgImg) feedbackBgImg.src = "images/Sampoerna_Email.svg";
+    feedbackWrap.classList.remove("with-identity");
   } else {
-    emailField.style.display = "flex";
-    if (feedbackBgImg) feedbackBgImg.src = "images/Sampoerna_Email__2_.svg";
+    emailField.style.display = "block";
+    feedbackWrap.classList.add("with-identity");
   }
+  btnRow.style.top = FB_BASE.btnRow + "px";
 }
 
 function goBack() {
+  clearFbErrors();
   document.getElementById("step2").style.display = "none";
-  document.getElementById("step1").style.display = "flex";
+  document.getElementById("step1").style.display = "block";
 }
 
 function confirmSubmit() {
-  const feedback = document.getElementById("feedback").value;
-  const email    = document.getElementById("fbEmail") ? document.getElementById("fbEmail").value : "";
+  clearFbErrors();
+  const feedback = document.getElementById("feedback").value.trim();
+  const email    = document.getElementById("fbEmail") ? document.getElementById("fbEmail").value.trim() : "";
+  let valid = true;
 
-  if (!feedback) { alert("Please enter feedback first"); return; }
-  if (!anonymousChoice && !email) { alert("Email is required if not anonymous"); return; }
-  if (!anonymousChoice && email && !isValidSampoernaEmail(email)) {
-    alert("Please use a valid Sampoerna University email.");
-    return;
+  if (!anonymousChoice) {
+    if (!email) {
+      showFbError("fbEmail", "Please enter your Sampoerna University email.");
+      valid = false;
+    } else if (!isValidSampoernaEmail(email)) {
+      showFbError("fbEmail", "Please use a valid Sampoerna University email (@sampoernauniversity.ac.id).");
+      valid = false;
+    }
   }
 
-  document.getElementById("step3-overlay").style.display = "flex";
+  if (!feedback) {
+    showFbError("feedback", "Please enter your feedback before submitting.");
+    valid = false;
+  }
+
+  if (!valid) return;
+
+  const overlay = document.getElementById("step3-overlay");
+  overlay.classList.remove("hidden");
+  setTimeout(() => overlay.classList.add("active"), 10);
 }
 
 function goBackToInput() {
-  document.getElementById("step3-overlay").style.display = "none";
+  const overlay = document.getElementById("step3-overlay");
+  overlay.classList.remove("active");
+  setTimeout(() => overlay.classList.add("hidden"), 600);
 }
 
 function submitFeedbackFinal() {
   const isAnon   = anonymousChoice;
-  const email    = isAnon ? null : (document.getElementById("fbEmail") ? document.getElementById("fbEmail").value.trim() : null);
+  const email    = isAnon ? null : document.getElementById("fbEmail").value.trim();
   const feedback = document.getElementById("feedback").value.trim();
 
-  // POST to Node.js server which appends directly to feedback_log.txt
-  fetch("http://localhost:3000/log-feedback", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ isAnon, email, feedback })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    if (!data.success) console.error("Logging failed:", data.error);
-  })
-  .catch(function(err) {
-    console.error("Could not reach feedback server:", err);
+  // Save to localStorage — admin reads from here directly
+  const feedbacks = JSON.parse(localStorage.getItem("cc_feedbacks") || "[]");
+  feedbacks.push({
+    id:        Date.now(),
+    timestamp: new Date().toLocaleString(),
+    type:      isAnon ? "Anonymous" : "With Identity",
+    email:     isAnon ? null : (email || "(not provided)"),
+    feedback:  feedback
   });
+  localStorage.setItem("cc_feedbacks", JSON.stringify(feedbacks));
 
-  document.getElementById("step3-overlay").style.display = "none";
-  document.getElementById("step2").style.display         = "none";
-  document.getElementById("step4").style.display         = "flex";
+  // Dismiss confirm overlay
+  const overlay = document.getElementById("step3-overlay");
+  overlay.classList.remove("active");
+  setTimeout(() => overlay.classList.add("hidden"), 600);
+
+  document.getElementById("step2").style.display = "none";
+
+  const step4 = document.getElementById("step4");
+  step4.style.display = "flex";
+  setTimeout(() => step4.classList.add("active"), 10);
 }
 
 function resetFeedback() {
-  document.getElementById("step4").style.display = "none";
-  document.getElementById("step1").style.display = "flex";
-  document.getElementById("feedback").value      = "";
+  const step4 = document.getElementById("step4");
+  step4.classList.remove("active");
+  setTimeout(() => { step4.style.display = "none"; }, 600);
+  document.getElementById("step1").style.display = "block";
+  document.getElementById("feedback").value = "";
   const fbEmail = document.getElementById("fbEmail");
   if (fbEmail) fbEmail.value = "";
+  clearFbErrors();
 }
