@@ -54,16 +54,6 @@ const classesByFloor = {
     "BEM Room", "Toilet ♀", "Toilet ♂", "Other"
   ],
   "7th": [
-   
-- 
-- 
-- CC II
-- 
-- 
-- 
-- 
-- 02
-- 03
     "02", "03", "04", "Dean Office",
     "Prayer Room", "Lecturer Office", "GA Storage",
     "Green Screen", "CC I", "CC II", "Gen Science Lab",
